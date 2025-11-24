@@ -1,119 +1,84 @@
-# VITYARTHI-PROJECT
-import random
-import sys
+[report rock.md](https://github.com/user-attachments/files/23729682/report.rock.md)
 
-GREEN = '\033[1;32m'
-RED = '\033[1;31m'
-YELLOW = '\033[1;33m'
-CYAN = '\033[1;36m'
-ENDC = '\033[0m'
+**PROJECT TITLE: ROCK, PAPER, SCISSORS GAME USING PYTHON** 
 
-MOVES = ['rock', 'paper', 'scissors']
+**Overview of the Project**
 
-def get_standardized_choice(user_input):
-    """
-    Cleans up user input and matches it to a valid move.
-    Allows for shortcuts like 'r' for rock.
-    """
-    clean_input = user_input.lower().strip()
-    
-    
-    if clean_input in ['rock', 'r']:
-        return 'rock'
-    elif clean_input in ['paper', 'p']:
-        return 'paper'
-    elif clean_input in ['scissors', 's']:
-        return 'scissors'
-    
-    return None
+This project creates a classic **Rock, Paper, Scissors** game for the command-line interface (CLI). It focuses on delivering a simple yet engaging user experience by incorporating essential game features, robust input handling, and clear, color-coded terminal output. The project is an application of concepts learned in the VITYARTHI course. 
 
-def get_computer_choice():
-    """Randomly selects a move for the computer."""
-    return random.choice(MOVES)
+**Problem Statement** 
 
-def determine_winner(user_move, computer_move):
-    """
-    Decides the winner.
-    Returns: 'tie', 'user', or 'computer'
-    """
-    if user_move == computer_move:
-        return 'tie'
-    
-    
-    if (user_move == 'rock' and computer_move == 'scissors') or \
-       (user_move == 'scissors' and computer_move == 'paper') or \
-       (user_move == 'paper' and computer_move == 'rock'):
-        return 'user'
-    
-    return 'computer'
+Traditional command-line games often suffer from poor user experience due to unstructured output and rigid input requirements, making them tedious for quick, casual play. 
 
-def display_scoreboard(user_score, computer_score, ties):
-    """Displays the current score with fancy formatting."""
-    print(f"\n{CYAN}" + "="*40 + ENDC)
-    print(f"{CYAN}         ** CURRENT SCORE BOARD ** {ENDC}")
-    print("-" * 40)
+The main problems addressed are:
 
-    
-    u_color = GREEN if user_score > computer_score else ENDC
-    c_color = RED if computer_score > user_score else ENDC
-    
-    print(f"   User: {u_color}**{user_score}**{ENDC} | "
-          f"Computer: {c_color}**{computer_score}**{ENDC} | "
-          f"Ties: {YELLOW}**{ties}**{ENDC}")
-    print(CYAN + "="*40 + ENDC + "\n")
+- **Lack of Feedback:** No immediate visual distinction between a win, loss, or tie. 
+- **Input Inflexibility:** Games often require exact spelling, leading to invalid input errors for simple abbreviations (e.g., using "r" instead of "rock"). 
+- **Poor Score Tracking:** Lack of a clearly displayed score board to track progress across multiple rounds. 
 
-def main():
-    print(f"{CYAN} **Welcome to Rock, Paper, Scissors!** {ENDC}")
-    
-    user_score = 0
-    computer_score = 0
-    ties = 0
-    round_num = 1
+**Solution (Project Goal)** 
 
-    while True:
-        print(f"--- {CYAN}**ROUND {round_num}**{ENDC} ---")
-        
-        user_input = input("Your choice (rock/paper/scissors) or '0' to exit: ")
-        
-        if user_input == '0':
-            print(f"\n{CYAN} **Thanks for playing! Final Result:**{ENDC}")
-            display_scoreboard(user_score, computer_score, ties)
-            break
+The Rock, Paper, Scissors Console Game addresses these issues by providing a fully tracked and visually enhanced experience: 
 
-        user_move = get_standardized_choice(user_input)
+- **Robust Input Handling:** The custom input Handler function allows for **flexible and partial user inputs** (e.g., "roc" or "p" are correctly mapped). 
+- **Colorized Results:** **ANSI escape codes** (GREEN, RED, YELLOW) are used to immediately color-coded the results for wins, losses, and ties, improving visual clarity. 
+- **Score Board:** A dedicated display scores function presents the 
 
-        if not user_move:
-            print(f"{RED}Invalid input. Please type 'rock', 'paper', or 'scissors'.{ENDC}\n")
-            continue
+  current win/loss/tie tally clearly after every round. 
 
-        computer_move = get_computer_choice()
+**Features of the Project** 
 
+The project focuses on enhancing the user experience in a console environment. 
 
-        print("\n" + "*"*20)
-        print(f"You chose:     **{user_move.upper()}**")
-        print(f"Computer chose: **{computer_move.upper()}**")
-        print("*"*20)
+- **Error Reduction and Highly Accurate**  
+- **Colorized Results** (ANSI Codes)  
+- **Green** for User Win  
+- **Red** for Computer Win  
+- **Yellow** for Tie  
+- **Automated Features**: Score tracking, round incrementing, and computer move generation. 
+- **Robust Input Handling** : Accepts partial strings like 'sci' for 'scissors'. 
 
-        # Decide winner
-        result = determine_winner(user_move, computer_move)
+**Tools Used** 
 
-        if result == 'tie':
-            print(f"{YELLOW} **It's a TIE!**{ENDC}")
-            ties += 1
-        elif result == 'user':
-            print(f"{GREEN} **YOU WIN this round!**{ENDC}")
-            user_score += 1
-        else:
-            print(f"{RED}**COMPUTER WINS this round!**{ENDC}")
-            computer_score += 1
+**Tool/Technology**  **Role** ![](Aspose.Words.f78c36d2-6302-462f-86de-8ec28b0f1cbd.001.png)![](Aspose.Words.f78c36d2-6302-462f-86de-8ec28b0f1cbd.002.png)
 
-        display_scoreboard(user_score, computer_score, ties)
-        round_num += 1
+**Python**  Primary programming language **Random Module**  Generates the computer's choice 
 
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        # Handles Ctrl+C gracefully
-        print(f"\n{CYAN} Game exited.{ENDC}")
-        sys.exit()
+**Tool/Technology**  **Role** ![](Aspose.Words.f78c36d2-6302-462f-86de-8ec28b0f1cbd.003.png)![](Aspose.Words.f78c36d2-6302-462f-86de-8ec28b0f1cbd.004.png)
+
+**ANSI Escape Codes** Provides colorization and UI feedback 
+
+**Steps to Install and Run** 
+
+This is a single-file application requiring only Python 3. 
+
+1. **Download the file** attached: Ensure the Python code is saved as rck.py. 
+1. **Open Terminal/Command Prompt:** Navigate to the directory where you saved rck.py. 
+1. **Run the file:** Execute the script using the Python interpreter:
+
+Bash 
+
+python rck.py 
+
+4. **Play:** Enter your choice ('rock', 'paper', 'scissors', or '0' to exit) when prompted. 
+
+**Scope of the Project** 
+
+The scope of this project is limited to the console environment, serving as a functional demonstration of core programming concepts.
+
+- **Functional Goal:** To provide a simple, continuous **single-user** gaming experience. 
+- **Educational Goal:** To showcase **Modular Programming** (using functions like win\_dec and display scores) and techniques for **enhanced UX** in CLI applications using colour codes22. 
+
+Potential Future Developments  
+
+- **Best-of-N Format:** Implement a structure to play for a predefined number of rounds (e.g., best-of-5). 
+- **User Profiles:** Save and load user scores to a file (CSV or JSON) to track long-term performance. 
+- **Error Handling:** Use a more structured approach to catch and handle all potential user input errors. 
+
+**Target Users** 
+
+This project is primarily an educational and introductory tool demonstrating Python programming.
+
+- **VITYARTHI Course Students:** To reinforce concepts of basic game logic, state management, and user input handling. 
+- **Beginner Python Developers:** To study clean function separation and enhancing terminal output.
+- **Individual Users:** For quick, casual play against the computer.
