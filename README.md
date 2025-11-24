@@ -8,22 +8,16 @@ Rock : Scissors (Rock)
 import random
 import sys
 
-# --- ANSI Color Codes for Terminal Output ---
-# These variables hold the strings that change the text color.
-# We use BOLD for extra emphasis.
-GREEN = '\033[1;32m' # Success/User Wins
-RED = '\033[1;31m'   # Failure/Computer Wins
-YELLOW = '\033[1;33m' # Tie/Neutral
-CYAN = '\033[1;36m'  # Headers/Separators
-ENDC = '\033[0m'     # Reset color to default
-# ------------------------------------------
+GREEN = '\033[1;32m'
+RED = '\033[1;31m'   
+YELLOW = '\033[1;33m' 
+CYAN = '\033[1;36m'  
+ENDC = '\033[0m'     
 
-# --- Enhanced UI / Game Logic Variables ---
 user_score = 0
 computer_score = 0
 tie_score = 0
 round_num = 1
-# ------------------------------------------
 
 def inputHandler(inpt):
     inpt=inpt.lower()
@@ -48,7 +42,7 @@ def inputHandler(inpt):
                 break
     if(rval == pval and pval == sval):
         print(f"\n\n{RED}❌ **Invalid input.** Please type 'rock', 'paper', or 'scissors'.{ENDC}")
-        return None  # Return None for invalid input
+        return None 
     else:
         w=max(rval,pval,sval)
         if(w== rval):
@@ -60,19 +54,18 @@ def inputHandler(inpt):
         
             
     
-# computer's choice
+
 def computers_choice():
-    # Returns -1 for Rock, 0 for Paper, 1 for Scissors
+   
     return (random.choice([-1,0,1]))
 
 def win_dec(user, computer):
-    global user_score, computer_score, tie_score # Need to modify global scores
-    
+    global user_score, computer_score, tie_score 
     if (user == computer):
         print(f"{YELLOW}🤝 **It's a TIE!**{ENDC}")
         tie_score += 1
     else:
-        # Winning conditions: (User: Rock(-1) vs Comp: Scissors(1)) or (User: Paper(0) vs Comp: Rock(-1)) or (User: Scissors(1) vs Comp: Paper(0))
+        
         if ((user == -1 and computer == 1) or (user == 0 and computer == -1) or  (user == 1 and computer == 0)):
             print(f"{GREEN}🎉 **USER WINS!**{ENDC}")
             user_score += 1
@@ -85,7 +78,7 @@ def display_scores():
     print("\n" + CYAN + "="*40 + ENDC)
     print(f"{CYAN}         **CURRENT SCORE BOARD** {ENDC}")
     print("-" * 40)
-    # Applying color dynamically to the scores based on win/loss/tie
+
     user_display = f"{GREEN}**{user_score}**{ENDC}" if user_score > computer_score else f"**{user_score}**"
     comp_display = f"{RED}**{computer_score}**{ENDC}" if computer_score > user_score else f"**{computer_score}**"
     tie_display = f"{YELLOW}**{tie_score}**{ENDC}"
@@ -114,7 +107,7 @@ while(True):
     user = inputHandler(uinput)
     
     if user is None:
-        continue # Skip the rest of the loop for invalid input
+        continue 
         
     computer = computers_choice()
     
@@ -126,7 +119,7 @@ while(True):
     try:
         win_dec(rps[user],computer)
         display_scores()
-        round_num += 1 # Increment round only on valid play
+        round_num += 1 
     except KeyError:
         print(f"{RED}\nAn unexpected error occurred. Exiting.{ENDC}")
-        sys.exit() # Exit the program on unexpected error
+        sys.exit() 
