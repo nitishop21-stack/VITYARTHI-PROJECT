@@ -1,125 +1,119 @@
 # VITYARTHI-PROJECT
-"""
-Rock : Paper (Paper)
-Paper : Scissors (Scissors)
-Rock : Scissors (Rock)
-"""
-
 import random
 import sys
 
 GREEN = '\033[1;32m'
-RED = '\033[1;31m'   
-YELLOW = '\033[1;33m' 
-CYAN = '\033[1;36m'  
-ENDC = '\033[0m'     
+RED = '\033[1;31m'
+YELLOW = '\033[1;33m'
+CYAN = '\033[1;36m'
+ENDC = '\033[0m'
 
-user_score = 0
-computer_score = 0
-tie_score = 0
-round_num = 1
+MOVES = ['rock', 'paper', 'scissors']
 
-def inputHandler(inpt):
-    inpt=inpt.lower()
-    passOutput="rock paper scissors"
-    r,p,s=passOutput.split()
-    rval,pval,sval=0,0,0
-    inptList=list(inpt)
-    pList=[list(r),list(p),list(s)]
-    for k in pList:
-        i=0
-        for l in k:
-            try:
-                if(l == inptList[i]):
-                    if(k == list(r)):
-                        rval+=1
-                    elif(k == list(p)):
-                        pval+=1
-                    elif(k == list(s)):
-                        sval+=1
-                i+=1
-            except IndexError:
-                break
-    if(rval == pval and pval == sval):
-        print(f"\n\n{RED}❌ **Invalid input.** Please type 'rock', 'paper', or 'scissors'.{ENDC}")
-        return None 
-    else:
-        w=max(rval,pval,sval)
-        if(w== rval):
-            return r
-        elif(w== pval):
-            return p
-        elif(w== sval):
-            return s
-        
-            
+def get_standardized_choice(user_input):
+    """
+    Cleans up user input and matches it to a valid move.
+    Allows for shortcuts like 'r' for rock.
+    """
+    clean_input = user_input.lower().strip()
     
+    
+    if clean_input in ['rock', 'r']:
+        return 'rock'
+    elif clean_input in ['paper', 'p']:
+        return 'paper'
+    elif clean_input in ['scissors', 's']:
+        return 'scissors'
+    
+    return None
 
-def computers_choice():
-   
-    return (random.choice([-1,0,1]))
+def get_computer_choice():
+    """Randomly selects a move for the computer."""
+    return random.choice(MOVES)
 
-def win_dec(user, computer):
-    global user_score, computer_score, tie_score 
-    if (user == computer):
-        print(f"{YELLOW}🤝 **It's a TIE!**{ENDC}")
-        tie_score += 1
-    else:
-        
-        if ((user == -1 and computer == 1) or (user == 0 and computer == -1) or  (user == 1 and computer == 0)):
-            print(f"{GREEN}🎉 **USER WINS!**{ENDC}")
-            user_score += 1
-        else:
-            print(f"{RED}🤖 **COMPUTER WINS!**{ENDC}")
-            computer_score += 1
+def determine_winner(user_move, computer_move):
+    """
+    Decides the winner.
+    Returns: 'tie', 'user', or 'computer'
+    """
+    if user_move == computer_move:
+        return 'tie'
+    
+    
+    if (user_move == 'rock' and computer_move == 'scissors') or \
+       (user_move == 'scissors' and computer_move == 'paper') or \
+       (user_move == 'paper' and computer_move == 'rock'):
+        return 'user'
+    
+    return 'computer'
 
-def display_scores():
-    """Prints the current score board with colors."""
-    print("\n" + CYAN + "="*40 + ENDC)
-    print(f"{CYAN}         **CURRENT SCORE BOARD** {ENDC}")
+def display_scoreboard(user_score, computer_score, ties):
+    """Displays the current score with fancy formatting."""
+    print(f"\n{CYAN}" + "="*40 + ENDC)
+    print(f"{CYAN}         ** CURRENT SCORE BOARD ** {ENDC}")
     print("-" * 40)
 
-    user_display = f"{GREEN}**{user_score}**{ENDC}" if user_score > computer_score else f"**{user_score}**"
-    comp_display = f"{RED}**{computer_score}**{ENDC}" if computer_score > user_score else f"**{computer_score}**"
-    tie_display = f"{YELLOW}**{tie_score}**{ENDC}"
-
-    print(f"   User: {user_display} | Computer: {comp_display} | Ties: {tie_display}")
+    
+    u_color = GREEN if user_score > computer_score else ENDC
+    c_color = RED if computer_score > user_score else ENDC
+    
+    print(f"   User: {u_color}**{user_score}**{ENDC} | "
+          f"Computer: {c_color}**{computer_score}**{ENDC} | "
+          f"Ties: {YELLOW}**{ties}**{ENDC}")
     print(CYAN + "="*40 + ENDC + "\n")
 
-
-rps ={"rock":-1,"paper":0,"scissors":1}
-revRPS={-1:"rock",0:"paper",1:"scissors"}
-user = ""
-
-print(f"{CYAN}✨ **Welcome to Rock, Paper, Scissors!** ✨{ENDC}")
-display_scores()
-
-while(True):
-    print(f"--- {CYAN}**ROUND {round_num}**{ENDC} ---")
-
-    uinput = input("Your choice (type 'rock', 'paper', 'scissors', or '0' to exit): ").strip()
+def main():
+    print(f"{CYAN} **Welcome to Rock, Paper, Scissors!** {ENDC}")
     
-    if (uinput == "0"):
-        print(f"\n{CYAN}👋 **Thanks for playing! Final Score:**{ENDC}")
-        display_scores()
-        break
-    
-    user = inputHandler(uinput)
-    
-    if user is None:
-        continue 
+    user_score = 0
+    computer_score = 0
+    ties = 0
+    round_num = 1
+
+    while True:
+        print(f"--- {CYAN}**ROUND {round_num}**{ENDC} ---")
         
-    computer = computers_choice()
-    
-    print("\n" + "*"*20)
-    print(f"You chose: **{user.upper()}**")
-    print(f"Computer chose: **{revRPS[computer].upper()}**")
-    print("*"*20)
-    
+        user_input = input("Your choice (rock/paper/scissors) or '0' to exit: ")
+        
+        if user_input == '0':
+            print(f"\n{CYAN} **Thanks for playing! Final Result:**{ENDC}")
+            display_scoreboard(user_score, computer_score, ties)
+            break
+
+        user_move = get_standardized_choice(user_input)
+
+        if not user_move:
+            print(f"{RED}Invalid input. Please type 'rock', 'paper', or 'scissors'.{ENDC}\n")
+            continue
+
+        computer_move = get_computer_choice()
+
+
+        print("\n" + "*"*20)
+        print(f"You chose:     **{user_move.upper()}**")
+        print(f"Computer chose: **{computer_move.upper()}**")
+        print("*"*20)
+
+        # Decide winner
+        result = determine_winner(user_move, computer_move)
+
+        if result == 'tie':
+            print(f"{YELLOW} **It's a TIE!**{ENDC}")
+            ties += 1
+        elif result == 'user':
+            print(f"{GREEN} **YOU WIN this round!**{ENDC}")
+            user_score += 1
+        else:
+            print(f"{RED}**COMPUTER WINS this round!**{ENDC}")
+            computer_score += 1
+
+        display_scoreboard(user_score, computer_score, ties)
+        round_num += 1
+
+if __name__ == "__main__":
     try:
-        win_dec(rps[user],computer)
-        display_scores()
-        round_num += 1 
-    except KeyError:
-        print(f"{RED}\nAn unexpected error occurred. Exiting.{ENDC}")
-        sys.exit() 
+        main()
+    except KeyboardInterrupt:
+        # Handles Ctrl+C gracefully
+        print(f"\n{CYAN} Game exited.{ENDC}")
+        sys.exit()
